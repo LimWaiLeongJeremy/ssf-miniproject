@@ -6,11 +6,36 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
 </head>
-<body>
-    <form method="GET" action="detecter">
-        <div class="input-group">
-            <input type="text" name="userName"
-        </div>
+<body >
+    <h1>Profanities Detector</h1>
+    <form 
+        method="post" 
+        action="detecter"
+        th:object="${detecter}"
+    >
+            <input 
+                type="text" 
+                name="username" 
+                id="username"
+                th:field="*{username}"
+                required
+                placeholder="Enter username"
+            >
+            <br>
+
+            <input 
+                type="text" 
+                name="comment" 
+                id="comment"
+                th:field="*{comment}"
+                required
+                placeholder="Enter content"
+            >
+                <br>
+
+            <button type="submit">
+                Check For Profanities
+            </button>
     </form>
 </body>
 </html>

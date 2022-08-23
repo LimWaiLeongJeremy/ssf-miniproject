@@ -2,8 +2,6 @@ package vvt2022.miniProject.badWordDetecter.config;
 
 import java.util.Optional;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -15,11 +13,10 @@ import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.serializer.Jackson2JsonRedisSerializer;
 import org.springframework.data.redis.serializer.StringRedisSerializer;
 
-import vvt2022.miniProject.badWordDetecter.model.*;;
+import vvt2022.miniProject.badWordDetecter.model.Detector;
 
 @Configuration
 public class RedisConfig {
-    private static final Logger logger = LoggerFactory.getLogger(RedisConfig.class);
 
     @Value("${spring.redis.host}")
     private String redisHost;
@@ -27,31 +24,50 @@ public class RedisConfig {
     @Value("${spring.redis.port}")
     private Optional<Integer> redisPort;
 
-    @Value("${spring.redis.password}")
-    private String redisPassword;
+    // @Value("${spring.redis.password}")
+    private String redisPassword
+        = System.getenv("REDIS_PASSWORD");  
 
-    @Value("${spring.redis.database}")
-    private String redisDatabase;
+    // @Bean
+    // @Scope("singleton")
+    // public RedisTemplate<String, Object> redisTemplate() {
+    //     final RedisStandaloneConfiguration config = new RedisStandaloneConfiguration();
+    //     config.setHostName(redisHost);
+    //     config.setPort(redisPort.get());
+    //     config.setPassword(redisPassword);
 
-    @Bean(name = "games")
+    //     final JedisClientConfiguration jedisClient = JedisClientConfiguration.builder().build();
+    //     final JedisConnectionFactory jedisFac = new JedisConnectionFactory(config, jedisClient);
+    //     jedisFac.afterPropertiesSet();
+    //     logger.info("redis host port > {redisHost} {redisPort}", redisHost, redisPort);
+    //     RedisTemplate<String, Object> template = new RedisTemplate();
+    //     template.setConnectionFactory(jedisFac);
+    //     template.setKeySerializer(new StringRedisSerializer());
+
+    //     RedisSerializer<Object> serializer = new JdkSerializationRedisSerializer(getClass().getClassLoader());
+    //     template.setValueSerializer(
+    //         serializer
+    //     );
+    //     return template;
+    // }
+    @Bean(name = "exchange")
     @Scope("singleton")
-    public RedisTemplate<String, Detecter> redisTemplate() {
+    public RedisTemplate<String, Detector> redisTemplate() {
         final RedisStandaloneConfiguration config = new RedisStandaloneConfiguration();
         config.setHostName(redisHost);
         config.setPort(redisPort.get());
         config.setPassword(redisPassword);
-        Jackson2JsonRedisSerializer jackson2JsonJsonSerializer = new Jackson2JsonRedisSerializer(Detecter.class);
+        Jackson2JsonRedisSerializer jackson2JsonJsonSerializer = new Jackson2JsonRedisSerializer(Detector.class);
 
         final JedisClientConfiguration jedisClient = JedisClientConfiguration.builder().build();
         final JedisConnectionFactory jedisFac = new JedisConnectionFactory(config, jedisClient);
         jedisFac.afterPropertiesSet();
-        logger.info("redis host port > {redisHost} {redisPort}", redisHost, redisPort);
-        RedisTemplate<String, Detecter> template = new RedisTemplate<String, Detecter>();
+        RedisTemplate<String, Detector> template = new RedisTemplate<String, Detector>();
         template.setConnectionFactory(jedisFac);
         template.setKeySerializer(new StringRedisSerializer());
         template.setValueSerializer(jackson2JsonJsonSerializer);
         template.setHashKeySerializer(template.getKeySerializer());
         template.setHashValueSerializer(template.getValueSerializer());
         return template;
-    }
+    }  
 }

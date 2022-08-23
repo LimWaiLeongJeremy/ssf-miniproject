@@ -1,8 +1,8 @@
 package vvt2022.miniProject.badWordDetecter.service;
 
-import vvt2022.miniProject.badWordDetecter.model.*;;
+import vvt2022.miniProject.badWordDetecter.model.*;
 
-public interface DetecterRepo {
+public interface DetectorRepo {
     // create
     // public void save(final Detecter user);
 

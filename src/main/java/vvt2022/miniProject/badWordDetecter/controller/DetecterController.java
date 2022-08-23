@@ -1,32 +1,41 @@
 package vvt2022.miniProject.badWordDetecter.controller;
 
+import java.io.IOException;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
 
-import vvt2022.miniProject.badWordDetecter.model.Detecter;
-import vvt2022.miniProject.badWordDetecter.service.DetecterRedis;
+import vvt2022.miniProject.badWordDetecter.model.Detector;
+import vvt2022.miniProject.badWordDetecter.model.User;
+import vvt2022.miniProject.badWordDetecter.service.DetectorRedis;
 
-@RestController
-@RequestMapping (path = "/detecter", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+@Controller
+@RequestMapping (path = "/detecter")
 public class DetecterController {
     private static final Logger logger = LoggerFactory.getLogger(DetecterController.class);
 
     @Autowired
-    DetecterRedis service;
+    DetectorRedis service;
 
-    @GetMapping
-    public String contactForm(@RequestParam(required = true) String userName, String content, Model model) {
-        model.addAttribute("detecter", new Detecter());
+    @PostMapping
+    public String contactForm(@ModelAttribute User user
+                            , Model model) throws IOException {
+        // logger.info(detector.getUsername());                        
+        // Detecter d = new Detecter();
+        // d.setUsername(detector.getUsername());
+        // d.setContent(detector.getContent());
+        // Detecter result = service.getResult(user, model);
+        Detector result = service.getResult(user);
+        logger.info("controller");
+        logger.info(result.toString());
+        model.addAttribute("detecter", result);
+
         return "detecter";
     }
     // @PostMapping

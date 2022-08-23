@@ -7,6 +7,14 @@
     <title>Bad word detecter</title>
 </head>
 <body>
-    <form></form>
+    <div id="contentBox" class="justify-content-center">
+        <h1>Results of Your Content</h1>
+        <!-- <p>Username: <span data-th-text="${detecter.username}"></span> </p>
+        <br> -->
+        <p>Result: <span data-th-text="${detecter.censoredContent}"></span> </p>
+        <p>Numer of Profanities detected: <span data-th-text="${detecter.badWordsTotal}"></span> </p>
+        <br>
+    </div>
+    
 </body>
 </html>
