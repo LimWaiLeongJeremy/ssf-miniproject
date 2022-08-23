@@ -25,7 +25,7 @@ public class DetectorRedis implements DetectorRepo {
     private static String URL = "https://api.apilayer.com/bad_words?";
     // @Value("${bad.word.detecter}")
         String apiKey
-            = System.getenv("API_KEY");
+            = System.getenv("BAD_WORD_DETECTER");
 
         @PostConstruct
         public void init() {
