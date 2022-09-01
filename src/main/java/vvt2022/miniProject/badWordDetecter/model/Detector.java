@@ -3,8 +3,10 @@ package vvt2022.miniProject.badWordDetecter.model;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.Serializable;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.UUID;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -14,7 +16,7 @@ import jakarta.json.JsonObject;
 import jakarta.json.JsonReader;
 import jakarta.json.JsonValue;
 
-public class Detector {
+public class Detector implements Serializable{
     private static final Logger logger = LoggerFactory.getLogger(Detector.class);
 
     private String content;
@@ -22,7 +24,19 @@ public class Detector {
     private List<BadWordsList> badWordsList;
     private String censoredContent;
     private String message;
+    private String username;
+    private String comment;
+    private String id = UUID
+                    .randomUUID()
+                    .toString()
+                    .substring(0, 2); 
 
+    @Override
+    public String toString() {
+        return "Detector [badWordsList=" + badWordsList + ", badWordsTotal=" + badWordsTotal + ", censoredContent="
+                + censoredContent + ", comment=" + comment + ", content=" + content + ", id=" + id + ", message="
+                + message + ", username=" + username + "]";
+    }
 
     public static Detector createJson(String json) throws IOException {
         logger.info("Detector");
@@ -34,28 +48,17 @@ public class Detector {
             JsonObject o = r.readObject();
             d.content = o.get("content").toString();
             d.badWordsTotal = o.getJsonNumber("bad_words_total").longValue();
-            //d.badWordsList = BadWordsList.createJsonArray(o.getJsonArray("bad_words_list").asJsonArray());
             d.censoredContent = o.get("censored_content").toString();
            
             for (JsonValue v : o.getJsonArray("bad_words_list")){
                 bwl.add(BadWordsList.create((JsonObject)v));
             }
             d.badWordsList = bwl;
-                
-        
-            
-            logger.info(">>>>>>>" + d.toString());
         }
         return d;
     }
  
-    
-    @Override
-    public String toString() {
-        return "Detecter [badWordsList=" + badWordsList.toString() + ", badWordsTotal=" + badWordsTotal
-                + ", censoredContent=" + censoredContent
-                + ", content=" + content + ", message=" + message + "]";
-    }
+
     public String getMessage() {
         return message;
     }
@@ -86,6 +89,22 @@ public class Detector {
     public void setCensoredContent(String censoredContent) {
         this.censoredContent = censoredContent;
     }
-
-  
+    public String getId() {
+        return id;
+    }
+    public void setId(String id) {
+        this.id = id;
+    }
+    public String getComment() {
+        return comment;
+    }
+    public void setComment(String comment) {
+        this.comment = comment;
+    }
+    public String getUsername() {
+        return username;
+    }
+    public void setUsername(String username) {
+        this.username = username;
+    }
 }
