@@ -18,7 +18,7 @@ import vvt2022.miniProject.badWordDetecter.model.User;
 import vvt2022.miniProject.badWordDetecter.service.DetectorRedis;
 
 @Controller
-@RequestMapping (path = "/detecter")
+@RequestMapping (path = "/detector")
 public class DetectorController {
     private static final Logger logger = LoggerFactory.getLogger(DetectorController.class);
 
