@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import javax.annotation.PostConstruct;
@@ -82,7 +83,10 @@ public class DetectorRedis implements DetectorRepo {
 
 
     @Override
-    public void findByUser(Model model, String username) {
+    public Optional findByUser(Model model, String username) {
+        if (redisTemplate.opsForHash().values(username).isEmpty())
+        return Optional.empty();
+
         List <Object> arr = new ArrayList<>();
     
         arr = redisTemplate.opsForHash().values(username);
@@ -93,7 +97,23 @@ public class DetectorRedis implements DetectorRepo {
         logger.info(dArr.toString());
 
         model.addAttribute("detectorList", dArr);
+        return Optional.of(dArr);
         
+    }
+
+
+    @Override
+    public Optional<List<Detector>> get(String username) {
+        if (redisTemplate.opsForHash().values(username).isEmpty())
+            return Optional.empty();
+            List <Object> arr = new ArrayList<>();
+    
+            arr = redisTemplate.opsForHash().values(username);
+            List <Detector> dataArr = arr.stream()
+                    .map(element->(Detector) element)
+                    .collect(Collectors.toList());
+    
+        return Optional.of(dataArr);
     }
 
 }

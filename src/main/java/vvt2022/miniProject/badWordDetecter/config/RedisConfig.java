@@ -26,7 +26,7 @@ public class RedisConfig {
 
     // @Value("${spring.redis.password}")
     private String redisPassword
-        = System.getenv("REDIS_PASSWORD");  
+        = System.getenv("REDIS_PASSWORD");
 
     @Bean(name = "exchange")
     @Scope("singleton")

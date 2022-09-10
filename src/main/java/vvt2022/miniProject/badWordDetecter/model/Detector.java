@@ -58,6 +58,14 @@ public class Detector implements Serializable{
         return d;
     }
  
+    public JsonObject toJson() {
+		return Json.createObjectBuilder()
+			.add("content", this.content)
+			.add("bad_word_total", this.badWordsTotal)
+			.add("bad_word_list", (JsonValue) this.badWordsList)
+			.add("url", this.censoredContent)
+			.build();
+	}
 
     public String getMessage() {
         return message;

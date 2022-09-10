@@ -1,5 +1,6 @@
 package vvt2022.miniProject.badWordDetecter.model;
 
+import jakarta.json.Json;
 import jakarta.json.JsonObject;
 
 public class BadWordsList {
@@ -30,6 +31,18 @@ public class BadWordsList {
         bwl.setReplacedLen(json.getJsonNumber("replacedLen").longValue());
         return bwl;
     }
+
+    public JsonObject toJson() {
+		return Json.createObjectBuilder()
+			.add("id", this.original)
+			.add("published_on", this.word)
+			.add("title", this.deviations)
+			.add("url", this.info)
+			.add("imageurl", this.start)
+			.add("body", this.end)
+			.add("categories", this.replacedLen)
+			.build();
+	}
     
 
     public String getOriginal() {

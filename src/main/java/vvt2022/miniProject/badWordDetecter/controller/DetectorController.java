@@ -1,6 +1,8 @@
 package vvt2022.miniProject.badWordDetecter.controller;
 
 import java.io.IOException;
+import java.util.List;
+import java.util.Optional;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -18,7 +20,7 @@ import vvt2022.miniProject.badWordDetecter.model.User;
 import vvt2022.miniProject.badWordDetecter.service.DetectorRedis;
 
 @Controller
-@RequestMapping (path = "/detector")
+@RequestMapping (path = "/result")
 public class DetectorController {
     private static final Logger logger = LoggerFactory.getLogger(DetectorController.class);
 
@@ -35,19 +37,23 @@ public class DetectorController {
         model.addAttribute("detector", result);
         service.save(result, user);
 
-        return "detector";
+        return "result";
     }
 
     @GetMapping ("/{username}")
     public String getHistoryRecord (Model model
                             , @PathVariable(value = "username") String username) {
+        Optional<List<Detector>> opt = service.findByUser(model, username);
+        if (opt.isEmpty()) {
+            return "erroruser";
+        }
         service.findByUser(model, username);;
         return "history";
     }
     // @GetMapping ("/reveal")
     // public String revealContent(@ModelAttribute Detector detector, Model model){
 
-    // }
+    // }    
 
 
 // @RestController

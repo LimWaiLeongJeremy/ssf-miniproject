@@ -13,18 +13,16 @@
             background: lightgray;
         }
       </style> 
-    <title>Result</title>
+    <title>User Not Found</title>
 </head>
 <body>
     <div style="margin:20px 10px; font-weight:100;">
-        <label style="font-family: 'Long Cang', cursive; font: size 20px; height:130px;" href="/index.html">*!@#%$</label><br>
+        <label style="font-family: 'Long Cang', cursive; font: size 20px; height:130px;" onclick="location.href='/index.html'">*!@#%$</label><br>
     </div>
     <div style="margin:auto;text-align:center; padding:20px;">
-        <h1>Results of Your Content</h1>
-        <p>Result: <span data-th-text="${detector.censoredContent}"></span> </p>
-        <p>Numer of Profanities detected: <span data-th-text="${detector.badWordsTotal}"></span> </p>
-        <br>
-    <button type="button" class="btn btn-primary" onclick="history.back()">Back</button>
+        <span style="font-size:large">404</span>
+        <span style="font-size:medium">Page Not Found</span>
+        <span style="font-size:small">The page you are looking for does not exist.</h2>
     </div>
 
 </body>
