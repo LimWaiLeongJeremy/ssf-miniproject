@@ -26,17 +26,21 @@ public class DetectorController {
 
     @Autowired
     DetectorRedis service;
+    
+    Detector revealResult;
 
-    @PostMapping
+    @PostMapping 
     public String contactForm(@ModelAttribute User user
                             , Model model) throws IOException {
+        String modUsername = user.getUsername().toLowerCase();
+        user.setUsername(modUsername);
         Detector result = service.getResult(user);
         result.setUsername(user.getUsername());
         logger.info("controller");
         logger.info(result.toString());
         model.addAttribute("detector", result);
         service.save(result, user);
-
+        this.revealResult = result;         
         return "result";
     }
 
@@ -47,9 +51,17 @@ public class DetectorController {
         if (opt.isEmpty()) {
             return "erroruser";
         }
-        service.findByUser(model, username);;
+        service.findByUser(model, username);
         return "history";
     }
+
+    @GetMapping ("/reveal")
+    public String revealContent(Model model, Detector detector){
+        logger.info("REVEAL");
+        model.addAttribute("detectorReveal", this.revealResult);
+        return "reveal";
+    }
+
     // @GetMapping ("/reveal")
     // public String revealContent(@ModelAttribute Detector detector, Model model){
 

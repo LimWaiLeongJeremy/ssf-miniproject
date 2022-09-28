@@ -1,6 +1,5 @@
 package vvt2022.miniProject.badWordDetecter.controller;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 

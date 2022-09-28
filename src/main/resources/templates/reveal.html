@@ -12,26 +12,30 @@
             font-weight: 300;
             background: lightgray;
         }
+        .backBtn{
+            margin-top: 30px;
+        }
+        .list{
+            margin: auto;
+            width:100px;
+        }
       </style> 
-    <title>Result</title>
-</head>
-<body>
-    <form 
-        method="get" 
-        action="result/reveal"
-        th:object="${detector}"
-    >
+    <title>Reveal</title>
+    </head>
+    <body>
         <div style="margin:20px 10px; font-weight:100;">
             <label style="font-family: 'Long Cang', cursive; font: size 20px; height:130px;" onclick="location.href='index.html'">*!@#%$</label><br>
         </div>
         <div style="margin:auto;text-align:center; padding:20px;">
-            <h1>Results of Your Content</h1>
-            <p>Result: <span data-th-text="${detector.censoredContent}"></span> </p>
-            <p>Nubmer of Profanities detected: <span data-th-text="${detector.badWordsTotal}"></span> </p>
+            <h1>REVEAL</h1>
+            <span th:text="${detectorReveal.content}"></span>
             <br>
-            <button type="submit" class="btn btn-secondary">Reveal your content(s)</button>
-            <button type="button" class="btn btn-primary" onclick="location.href='index.html'">Back</button>
+            <h4>Your list of <span th:text="${detectorReveal.badWordsTotal}"></span> bad words detected</h4>
+            <ul class="list" th:each="bwl : ${detectorReveal.badWordsList}">
+                <li th:text="${bwl.original}"></li>
+            </ul>
+
+            <button type="button" class="btn btn-primary backBtn" onclick="location.href='/index.html'">Check Again</button>
         </div>
-    </form>
 </body>
 </html>
