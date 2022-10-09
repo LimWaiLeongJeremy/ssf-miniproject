@@ -7,7 +7,9 @@ public class User {
 
     @Override
     public String toString() {
-        return "User [comment=" + comment + ", username=" + username + "]";
+        return "User [comment=" + comment 
+                + ", username=" + username 
+                + "]";
     }
 
     public String getComment() {

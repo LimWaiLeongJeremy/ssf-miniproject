@@ -29,21 +29,29 @@ public class DetectorController {
     
     Detector revealResult;
 
-    @PostMapping 
-    public String contactForm(@ModelAttribute User user
-                            , Model model) throws IOException {
+    //From index.html
+    @PostMapping (consumes="application/x-www-form-urlencoded")
+    public String contentForm(@ModelAttribute User user
+                                , Model model) throws IOException {
         String modUsername = user.getUsername().toLowerCase();
         user.setUsername(modUsername);
         Detector result = service.getResult(user);
         result.setUsername(user.getUsername());
-        logger.info("controller");
-        logger.info(result.toString());
         model.addAttribute("detector", result);
         service.save(result, user);
         this.revealResult = result;         
         return "result";
     }
 
+    //From index.html
+    @PostMapping ("/search")
+    public String searchHistory(@ModelAttribute String username
+                                , Model model){
+        model.addAttribute("username", username);
+        return "searchHistory";
+    }
+
+    //From URL
     @GetMapping ("/{username}")
     public String getHistoryRecord (Model model
                             , @PathVariable(value = "username") String username) {
@@ -55,63 +63,10 @@ public class DetectorController {
         return "history";
     }
 
+    //From result.html
     @GetMapping ("/reveal")
     public String revealContent(Model model, Detector detector){
-        logger.info("REVEAL");
         model.addAttribute("detectorReveal", this.revealResult);
         return "reveal";
     }
-
-    // @GetMapping ("/reveal")
-    // public String revealContent(@ModelAttribute Detector detector, Model model){
-
-    // }    
-
-
-// @RestController
-// @RequestMapping (path = "/api")
-// public class DetecterRestController {
-   
-//     @Autowired
-//     DetectorRedis service;
-
-//     @PostMapping
-//     public String contactForm(@ModelAttribute User user
-//                             , Model model) throws IOException {
-//         Detector result = service.getResult(user);
-//         logger.info("controller");
-//         logger.info(result.toString());
-//         model.addAttribute("detecter", result);
-//         service.save(result, user);
-
-//         return "detecter";
-//     }
-    
-// }
-    // @PostMapping("/employees")
-    // public Employee saveEMployee(@RequestBody Employee employee){
-    //     employeeRepository.saveEmployee(employee);
-    //     return employee;
-    // }
-    // @GetMapping("/employees")
-    // public List<Employee> findAll(){
-    //     return employeeRepository.findAll();
-    // }
-    // @GetMapping("/employees/{id}")
-    // public Employee findById(@PathVariable("id") Integer id){
-    //     return employeeRepository.findById(id);
-    // }
-
-    // @PutMapping("/employees")
-    // public void update(@RequestBody Employee employee){
-    //     employeeRepository.update(employee);
-
-    // }
-    // @DeleteMapping("/employees/{id}")
-    // public  void delete(@PathVariable("id") Integer id){
-    //     employeeRepository.delete(id);
-    // }
-
-    
-  
 }

@@ -31,15 +31,21 @@ public class Detector implements Serializable{
                     .toString()
                     .substring(0, 2); 
 
+
     @Override
     public String toString() {
-        return "Detector [badWordsList=" + badWordsList + ", badWordsTotal=" + badWordsTotal + ", censoredContent="
-                + censoredContent + ", comment=" + comment + ", content=" + content + ", id=" + id + ", message="
-                + message + ", username=" + username + "]";
+        return "Detector [content=" + content 
+                + ", badWordsTotal=" + badWordsTotal 
+                + ", badWordsList=" + badWordsList 
+                + ", censoredContent=" + censoredContent 
+                + ", message=" + message 
+                + ", username=" + username 
+                + ", comment=" + comment 
+                + ", id=" + id 
+                + "]";
     }
 
     public static Detector createJson(String json) throws IOException {
-        logger.info("Detector");
         Detector d = new Detector();
         final List<BadWordsList> bwl = new LinkedList<>();
 

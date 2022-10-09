@@ -15,33 +15,73 @@
             background: lightgray;
             /* -webkit-linear-gradient(white,rgb(247, 247, 247), lightgrey,darkgrey, grey,rgb(98, 97, 97),rgb(50, 50, 50)); */
             height: 100%;
+            padding: 50px;
+        }
+
+        .wrapper{
+            background: white;
+            height: 100%;
+            width: 100%;
+            box-shadow: 8px 8px 8px #888888;
         }
 
         .margin-auto-class{
             margin:auto;
+        
         }
 
-        .row-form{
-            margin-top:10px;
-            text-align: right;
+        .formdiv{
+            margin: auto;
+            width: 50%
+        }
+
+        .form-floating>label{
+            padding: 0.5em 0.5em !important;
+        }
+
+        #username{
+            height: 45px;
+            font-weight: 400 !important;
+        }
+
+        #comment{
+            font-weight: 400 !important;
         }
 
         .checkBtn{
-            background-color: rgb(43, 121, 246);
-            border-radius: 5px;
+            background-color: black;
+            border-radius: 90px;
             border: 0.5px solid lightgrey;
             color: white;
+            font-weight:300;
+            font-size: 0.9em; 
+            margin-top: 20px;
+            float: right;
+            padding: 3px 10px;
+        }
 
-            padding: 2px;
-            height: 30px;
-            width: 30px;
-            margin-top:58px;
+        #searchBtn{
+            font-weight:300;
+            font-size: 0.75em;
+            padding: 4px 7px !important;
+            background: black;
+            color:white;
+            border-radius: 60px;
+            border: 1px black solid;
+        }
+
+        #counterdiv{
+            margin:auto;
+            width: 50%;
+            padding: 10px 0px;
+            font-size: 0.7em;
         }
 
         .form-control{
             font-weight:200 !important;
             font-size:0.8rem;
         }
+
         @media only screen and (max-width:767px) {
             .row-form{
                 margin-top:10px;
@@ -49,63 +89,87 @@
             }
         }
       </style> 
+      <script type="text/javascript">
+        function validate(){
+            const areatextarea = document.querySelector("#comment");
+            const areatext = document.querySelector("#comment").value.length;
+            const textcount = document.querySelector("#textcount");
+            const wordcount = document.querySelector("#words_count");
+            textcount.innerHTML = areatext;
+            console.log(areatext)
+            
+            if(areatext > 50){
+                textcount.classList.add("text-danger");
+                areatextarea.classList.add("textarea_danger");
+            }else{
+                textcount.classList.remove("text-danger");
+                areatextarea.classList.remove("textarea_danger");
+            }
+            
+            if(areatext < 1){
+                wordcount.classList.add("d-none");
+            }else{
+                wordcount.classList.remove("d-none");
+            }
+        }   
+      </script>
+      
     <title>Profanity Checker</title>
 </head>
 <body >
-    <div style="margin:auto;text-align:center; padding:20px;">
-        <label style="font-family: 'Long Cang', cursive;font-size:80pt; height:130px;">*!@#%$</label><br>
-        <label style="font-weight:100;margin-bottom:20px;">Profanities Detector</label>
-    </div>
+    <div class="wrapper">
+        <div style="text-align:right; padding:15px;" class="row">
+            <form action="result/search" method="post">  
+                <button id="searchBtn" type="submit">Search User History</button>
+            </form> 
+        </div>
+        <div style="margin:auto;text-align:center; padding:20px;">
+            <label style="font-family: 'Long Cang', cursive;font-size:80pt; height:130px;">*!@#%$</label>
+            <br>
+            <label style="font-weight:100;margin-bottom:20px;">Profanities Detector</label>
+        </div>
         <form 
             method="post" 
             action="result"
             th:object="${detector}"
         >
-            <div style="margin:auto;">
-                <div class="row row-form">
-                    <div class="col-md-2"></div>
-                    <div class="col-md-2">
-                        <label>Name: </label>
-                    </div>
-                    <div class="col-md-4" style="text-align: left;" >
-                        <input 
-                        class="form-control"
+            <div>
+                <div class="form-floating mb-3 formdiv">
+                    <input 
                         type="text" 
+                        class="form-control" 
+                        id="username" 
+                        placeholder="Enter username" 
                         name="username" 
-                        id="username"
-                        th:field="*{username}"
+                        th:field="*{username}" 
                         required
-                        placeholder="Enter username"
                     >
-                    </div>
-                    <div class="col-md-4"></div>
+                    <label for="username">Username</label>
                 </div>
-                <div class="row row-form">
-                    <div class="col-md-2"></div>
-                    <div class="col-md-2">
-                        <label>Text to Check: </label>
-                    </div>
-                    <div class="col-md-4" style="text-align: left;" >
-                        <textarea 
-                            name="comment" 
-                            id="comment"
-                            th:field="*{comment}"
-                            required
-                            placeholder="Enter content"
-                            rows="4"
-                            class="form-control"
-                        ></textarea>
-                    </div>  
-                    <div class="col-md-4" style="text-align:left;">
-                        <button type="submit" class="checkBtn">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
-                                <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"/>
-                              </svg>
-                        </button>
-                    </div> 
+                <div class="form-floating formdiv">
+                    <textarea 
+                        maxlength="200" 
+                        type="text" 
+                        class="form-control" 
+                        id="comment" 
+                        name="comment" 
+                        onkeyup="validate()" 
+                        placeholder="Enter Content" 
+                        th:field="*{comment}" 
+                        autocomplete="off" 
+                        required
+                    ></textarea>
+                    <label for="comment">Content</label>
+                    <button type="submit" class="checkBtn">Check</button>
                 </div>
-
-            </div>
+                <div id="counterdiv">
+                    <span 
+                        id="words_count" 
+                        class="d-none"
+                    >Character count: <span id="textcount"></span>  /200</span>
+                </div>
+            </div>  
         </form>
+    </div>    
 </body>
 </html>

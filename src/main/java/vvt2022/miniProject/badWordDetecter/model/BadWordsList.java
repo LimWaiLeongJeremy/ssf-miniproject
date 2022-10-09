@@ -13,13 +13,19 @@ public class BadWordsList {
     private long end;
     private long replacedLen;
 
-
+    
     @Override
     public String toString() {
-        return "BadWordsList [deviations=" + deviations + ", end=" + end + ", info=" + info + ", original=" + original
-                + ", replacedLen=" + replacedLen + ", start=" + start + ", word=" + word + "]";
-    }    
-    
+        return "BadWordsList [original=" + original 
+                + ", word=" + word 
+                + ", deviations=" + deviations 
+                + ", info=" + info 
+                + ", start=" + start 
+                + ", end=" + end 
+                + ", replacedLen=" + replacedLen 
+                + "]";
+    }
+
     public static BadWordsList create (JsonObject json) {
         final BadWordsList bwl = new BadWordsList();
         bwl.setOriginal(json.getString("original"));

@@ -27,6 +27,7 @@ public class DetectorRestControllor {
 	@Autowired
 	private DetectorRedis svc;
 
+	//From URL
 	@GetMapping(path="/{username}")
 	public ResponseEntity<String> getHistoryByUser(@PathVariable(name="username") String username) {
 		Optional<List<Detector>> opt = svc.get(username);
@@ -38,7 +39,6 @@ public class DetectorRestControllor {
 				.body(payload.toString());
 		}
 		List<Detector> userHistory = opt.get();
-		logger.info(userHistory.toString());
 		return ResponseEntity.ok(userHistory.toString());
 	}
 }

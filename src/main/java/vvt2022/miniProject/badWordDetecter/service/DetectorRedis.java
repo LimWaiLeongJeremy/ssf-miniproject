@@ -35,83 +35,71 @@ public class DetectorRedis implements DetectorRepo {
 
     private static String URL = "https://api.apilayer.com/bad_words?";
 
-    // @Value("${bad.word.detector}")
         String apiKey
             = System.getenv("BAD_WORD_DETECTOR");
 
         @PostConstruct
         public void init() {
             if (Objects.isNull(apiKey))
-                System.err.println("BTC_KEY is not set");
+                logger.error("API_KEY is not set");
         }
 
-
+    //Calling Bad_Word API
     public Detector getResult(User user) throws IOException {
- 
         RestTemplate template = new RestTemplate();
         ResponseEntity<String> resp = null;
 
-      
-            HttpHeaders headers = new HttpHeaders();
-            headers.set("apikey", apiKey);
-            HttpEntity request = new HttpEntity(user.getComment(),headers);
+        HttpHeaders headers = new HttpHeaders();
+        headers.set("apikey", apiKey);
+        HttpEntity request = new HttpEntity(user.getComment(),headers);
 
-            resp = template.exchange(
-                    URL,
-                    HttpMethod.POST,
-                    request,
-                    String.class,
-                    1);
-            logger.info(request.getBody().toString());
-            logger.info(resp.getBody().toString());
-            if(resp.getStatusCode() == HttpStatus.OK) {
-                logger.info("Response Successful");
-            } else {
-                logger.info("Response Failed");
-            }
-            Detector d = Detector.createJson(resp.getBody());
-            return d;
-        
+        resp = template.exchange(
+                URL,
+                HttpMethod.POST,
+                request,
+                String.class,
+                1);
+        if(resp.getStatusCode() == HttpStatus.OK) {
+            logger.info("Response Successful");
+        } else {
+            logger.info("Response Failed");
+        }
+        Detector d = Detector.createJson(resp.getBody());
+        return d;
     }
 
-
-
+    //Saving a map into Redis. (keyName, mapName, value)
     @Override
     public void save(Detector detector, User user) {
         redisTemplate.opsForHash().put(user.getUsername(), detector.getId(), detector);
     }
 
-
+    //For Controllor
     @Override
     public Optional findByUser(Model model, String username) {
         if (redisTemplate.opsForHash().values(username).isEmpty())
-        return Optional.empty();
+            return Optional.empty();
 
-        List <Object> arr = new ArrayList<>();
-    
+        List <Object> arr = new ArrayList<>();    
         arr = redisTemplate.opsForHash().values(username);
         List <Detector> dArr = arr.stream()
                 .map(element->(Detector) element)
                 .collect(Collectors.toList());
 
-        logger.info(dArr.toString());
-
         model.addAttribute("detectorList", dArr);
-        return Optional.of(dArr);
-        
+        return Optional.of(dArr);        
     }
 
-
+    //For RestControllor
     @Override
     public Optional<List<Detector>> get(String username) {
         if (redisTemplate.opsForHash().values(username).isEmpty())
             return Optional.empty();
-            List <Object> arr = new ArrayList<>();
-    
-            arr = redisTemplate.opsForHash().values(username);
-            List <Detector> dataArr = arr.stream()
-                    .map(element->(Detector) element)
-                    .collect(Collectors.toList());
+        List <Object> arr = new ArrayList<>();
+        arr = redisTemplate.opsForHash().values(username);
+        List <Detector> dataArr = arr.stream()
+                .map(element->(Detector) element)
+                .collect(Collectors.toList());
     
         return Optional.of(dataArr);
     }

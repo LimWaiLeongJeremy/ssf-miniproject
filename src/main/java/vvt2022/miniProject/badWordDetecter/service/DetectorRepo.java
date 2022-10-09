@@ -15,7 +15,4 @@ public interface DetectorRepo {
     // // read
     public Optional findByUser(Model model, final String username);
     public Optional<List<Detector>> get (final String username);
-
-    // // update
-    // public int update(final Detecter user);
 }
